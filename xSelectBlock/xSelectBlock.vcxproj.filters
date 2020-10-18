@@ -281,6 +281,9 @@
     <ClInclude Include="pluginmain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="pluginsdk\x32bridge.lib">
@@ -345,5 +348,8 @@
     <ClCompile Include="pluginmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="selectDialog.rc" />
   </ItemGroup>
 </Project>

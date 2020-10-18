@@ -1,0 +1,118 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish (Poland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SelectBlock DIALOGEX 0, 0, 172, 137
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Select block"
+FONT 8, "Microsoft Sans Serif", 400, 0, 0xEE
+BEGIN
+    LTEXT           "Start-offset:",IDC_STATIC,5,5,37,8
+    EDITTEXT        IDC_START_EDIT,5,15,162,14,ES_RIGHT | ES_UPPERCASE | ES_AUTOHSCROLL
+    CONTROL         "End-offset:",IDC_END_RADIO,"Button",BS_AUTORADIOBUTTON,5,34,53,10
+    EDITTEXT        IDC_END_EDIT,5,44,162,14,ES_RIGHT | ES_UPPERCASE | ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "Length:",IDC_LEN_RADIO,"Button",BS_AUTORADIOBUTTON,5,64,36,10
+    EDITTEXT        IDC_LENGTH_EDIT,5,75,162,14,ES_RIGHT | ES_UPPERCASE | ES_AUTOHSCROLL
+    GROUPBOX        "",ID_GROUPBOX,5,94,162,20
+    CONTROL         "hex",IDC_HEX_RADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,16,101,36,10
+    CONTROL         "dec",IDC_DEC_RADIO,"Button",BS_AUTORADIOBUTTON,68,101,28,10
+    PUSHBUTTON      "OK",IDC_BUTTON_OK,64,118,50,14
+    PUSHBUTTON      "Cancel",IDC_BUTTON_CANCEL,117,118,50,14
+    CONTROL         "oct",IDC_OCT_RADIO,"Button",BS_AUTORADIOBUTTON,128,101,25,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_SelectBlock, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 167
+        VERTGUIDE, 170
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 132
+        HORZGUIDE, 3
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_SelectBlock AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Polish (Poland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

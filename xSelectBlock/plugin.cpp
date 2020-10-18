@@ -1,10 +1,39 @@
 #include "plugin.h"
+#include "resource.h"
 
 enum
 {
     MENU,
     DUMP,
 };
+
+HWND dialog = NULL;
+HINSTANCE g_LocalDllHandle;
+
+INT_PTR CALLBACK DialogProc(
+    HWND Arg1,
+    UINT Arg2,
+    WPARAM Arg3,
+    LPARAM Arg4
+)
+{
+    if (Arg2 == WM_CLOSE)
+    {
+        DestroyWindow(dialog);
+        dialog = NULL;
+        return true;
+    }
+
+    return false;
+}
+
+void ShowDialog()
+{
+    if (!dialog)
+        dialog = CreateDialog(g_LocalDllHandle, MAKEINTRESOURCE(IDD_SelectBlock), GuiGetWindowHandle(), DialogProc);
+
+    ShowWindow(dialog, SW_SHOW);
+}
 
 static void Adler32Menu(int hWindow)
 {
@@ -54,7 +83,7 @@ PLUG_EXPORT void CBMENUENTRY(CBTYPE cbType, PLUG_CB_MENUENTRY* info)
     switch(info->hEntry)
     {
     case MENU:
-        MessageBoxA(hwndDlg, "Test Menu Entry Clicked!", PLUGIN_NAME, MB_ICONINFORMATION);
+        ShowDialog();
         break;
 
     case DUMP:
@@ -77,6 +106,10 @@ bool pluginInit(PLUG_INITSTRUCT* initStruct)
 //Deinitialize your plugin data here.
 void pluginStop()
 {
+    if (dialog)
+    {
+        SendMessage(dialog, WM_CLOSE, 0, 0);
+    }
 }
 
 //Do GUI/Menu related things here.
@@ -84,4 +117,14 @@ void pluginSetup()
 {
     _plugin_menuaddentry(hMenu, MENU, "xSelectBlock");
     _plugin_menuaddentry(hMenuDump, DUMP, "&Select block");
+    _plugin_menuadd(hMenuDump, "&Test menu");
+    _plugin_menuadd(hMenu, "&Test menu");
+}
+
+BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
+    if (fdwReason == DLL_PROCESS_ATTACH)
+        g_LocalDllHandle = hinstDLL;
+
+    return TRUE;
 }

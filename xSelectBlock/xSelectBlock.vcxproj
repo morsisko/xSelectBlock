@@ -241,6 +241,7 @@
     <ClInclude Include="pluginsdk\_scriptapi_register.h" />
     <ClInclude Include="pluginsdk\_scriptapi_stack.h" />
     <ClInclude Include="pluginsdk\_scriptapi_symbol.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="pluginsdk\capstone\capstone_x64.lib">
@@ -351,6 +352,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="selectDialog.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
