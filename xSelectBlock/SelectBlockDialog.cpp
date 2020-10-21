@@ -153,6 +153,20 @@ void checkAndFixInputText(HWND inputControl)
     }
 }
 
+void centerWindow(HWND window)
+{
+    RECT parentRect;
+    RECT windowRect;
+
+    GetWindowRect(GuiGetWindowHandle(), &parentRect);
+    GetWindowRect(window, &windowRect);
+
+    int x = parentRect.left + (parentRect.right - parentRect.left) / 2 - (windowRect.right - windowRect.left) / 2;
+    int y = parentRect.top + (parentRect.bottom - parentRect.top) / 2 - (windowRect.bottom - windowRect.top) / 2;
+
+    SetWindowPos(window, NULL, x, y, NULL, NULL, SWP_NOSIZE);
+}
+
 INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
