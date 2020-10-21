@@ -315,6 +315,7 @@ void ShowSelectBlockDialog(HINSTANCE instance, uint64_t start, uint64_t end)
 
     setupDialogValues(dialog, start, end);
     ShowWindow(dialog, SW_SHOW);
+    centerWindow(dialog);
 }
 
 void HideSelectBlockDialog()
