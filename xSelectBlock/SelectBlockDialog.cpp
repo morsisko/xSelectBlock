@@ -167,6 +167,39 @@ void centerWindow(HWND window)
     SetWindowPos(window, NULL, x, y, NULL, NULL, SWP_NOSIZE);
 }
 
+uint64_t getStartAddress(HWND hwndDialog)
+{
+    char startBuffer[64] = { 0 };
+    int base = getBase(getCurrentBase(hwndDialog));
+
+    GetWindowTextA(GetDlgItem(dialog, IDC_START_EDIT), startBuffer, sizeof(startBuffer));
+
+    return strtoull(startBuffer, NULL, base);
+}
+
+uint64_t getStopAddress(HWND hwndDialog)
+{
+    char buffer[64] = { 0 };
+    int base = getBase(getCurrentBase(hwndDialog));
+
+    if (IsDlgButtonChecked(dialog, IDC_END_RADIO))
+    {
+        GetWindowTextA(GetDlgItem(dialog, IDC_END_EDIT), buffer, sizeof(buffer));
+        return strtoull(buffer, NULL, base);
+    }
+
+    GetWindowTextA(GetDlgItem(dialog, IDC_LENGTH_EDIT), buffer, sizeof(buffer));
+    return getStartAddress(hwndDialog) + strtoull(buffer, NULL, base) - 1;
+}
+
+void HideSelectBlockDialog()
+{
+    if (dialog)
+        SendMessage(dialog, WM_CLOSE, 0, 0);
+
+    dialog = NULL;
+}
+
 INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -282,7 +315,17 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
         {
             if (HIWORD(wParam) == BN_CLICKED)
             {
-                MessageBoxA(dialog, "You clicked OK", "OK", NULL);
+                auto start = getStartAddress(hwndDlg);
+                auto end = getStopAddress(hwndDlg);
+
+                if (start > end)
+                    MessageBoxA(dialog, "Start address couldn't be higher than stop address", "Wrong data", MB_ICONWARNING);
+
+                else if (!Script::Gui::Dump::SelectionSet(start, end))
+                    MessageBoxA(dialog, "Couldn't set your selection. Maybe those values are out of bounds for this memory page?", "Couldn't select", MB_ICONWARNING);
+
+                else
+                    HideSelectBlockDialog();
             }
             break;
         }
@@ -291,7 +334,7 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
         {
             if (HIWORD(wParam) == BN_CLICKED)
             {
-                MessageBoxA(dialog, "You clicked Cancel", "Cancel", NULL);
+                HideSelectBlockDialog();
             }
             break;
         }
@@ -316,12 +359,4 @@ void ShowSelectBlockDialog(HINSTANCE instance, uint64_t start, uint64_t end)
     setupDialogValues(dialog, start, end);
     ShowWindow(dialog, SW_SHOW);
     centerWindow(dialog);
-}
-
-void HideSelectBlockDialog()
-{
-    if (dialog)
-        SendMessage(dialog, WM_CLOSE, 0, 0);
-
-    dialog = NULL;
 }
