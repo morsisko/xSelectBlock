@@ -78,8 +78,8 @@ static bool cbXext(int argc, char* argv[])
 //Initialize your plugin data here.
 bool pluginInit(PLUG_INITSTRUCT* initStruct)
 {
-    if (!_plugin_registercommand(pluginHandle, "xrang", cbXrang, false))
-        _plugin_logputs("[" PLUGIN_NAME "] Error registering the 'xrang' command!");
+    if (!_plugin_registercommand(pluginHandle, "xrange", cbXrang, false))
+        _plugin_logputs("[" PLUGIN_NAME "] Error registering the 'xrange' command!");
     if (!_plugin_registercommand(pluginHandle, "xset", cbXset, false))
         _plugin_logputs("[" PLUGIN_NAME "] Error registering the 'xset' command!");
     if (!_plugin_registercommand(pluginHandle, "xlen", cbXlen, false))
