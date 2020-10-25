@@ -319,7 +319,7 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 auto end = getStopAddress(hwndDlg);
 
                 if (start > end)
-                    MessageBoxA(dialog, "Start address couldn't be higher than stop address", "Wrong data", MB_ICONWARNING);
+                    MessageBoxA(dialog, "Start address can't be higher than stop address", "Wrong data", MB_ICONWARNING);
 
                 else if (!Script::Gui::Dump::SelectionSet(start, end))
                     MessageBoxA(dialog, "Couldn't set your selection. Maybe those values are out of bounds for this memory page?", "Couldn't select", MB_ICONWARNING);
