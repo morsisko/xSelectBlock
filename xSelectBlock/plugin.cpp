@@ -31,7 +31,7 @@ PLUG_EXPORT void CBMENUENTRY(CBTYPE cbType, PLUG_CB_MENUENTRY* info)
     }
 }
 
-static bool cbXrang(int argc, char* argv[])
+static bool cbXrange(int argc, char* argv[])
 {
     if (argc < 3)
         return false;
@@ -78,7 +78,7 @@ static bool cbXext(int argc, char* argv[])
 //Initialize your plugin data here.
 bool pluginInit(PLUG_INITSTRUCT* initStruct)
 {
-    if (!_plugin_registercommand(pluginHandle, "xrange", cbXrang, false))
+    if (!_plugin_registercommand(pluginHandle, "xrange", cbXrange, false))
         _plugin_logputs("[" PLUGIN_NAME "] Error registering the 'xrange' command!");
     if (!_plugin_registercommand(pluginHandle, "xset", cbXset, false))
         _plugin_logputs("[" PLUGIN_NAME "] Error registering the 'xset' command!");
