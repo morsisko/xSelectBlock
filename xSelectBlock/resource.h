@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by mainDialog.rc
+// Used by selectDialog.rc
 //
 #define IDD_SelectBlock                 9
 #define IDC_START_EDIT                  1001

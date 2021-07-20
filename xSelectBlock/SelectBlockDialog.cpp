@@ -129,6 +129,7 @@ void setupDialogValues(HWND hwndDialog, uint64_t start, uint64_t end)
     SetWindowTextA(GetDlgItem(hwndDialog, IDC_START_EDIT), startBuffer);
     SetWindowTextA(GetDlgItem(hwndDialog, IDC_END_EDIT), endBuffer);
     SetWindowTextA(GetDlgItem(hwndDialog, IDC_LENGTH_EDIT), lenBuffer);
+    SendMessageA(GetDlgItem(hwndDialog, IDC_LENGTH_EDIT), EM_SETSEL, 0, -1);
 }
 
 void checkAndFixInputText(HWND inputControl)
@@ -351,10 +352,77 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
     return false;
 }
 
+
+WNDPROC ptr_l;
+LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_KEYUP:
+    {
+        if (wParam == VK_TAB)
+        {
+            bool isShiftPressed = GetAsyncKeyState(VK_LSHIFT) & 0x8000;
+
+            static const int tabOrder[] = { IDC_START_EDIT, IDC_END_EDIT, IDC_LENGTH_EDIT };
+
+            int currentIndex = 0;
+            for (int i = 0; i < sizeof(tabOrder) / sizeof(int); i++)
+            {
+                if (GetDlgItem(dialog, tabOrder[i]) == hwnd)
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            if (isShiftPressed)
+                currentIndex--;
+            else
+                currentIndex++;
+
+            if (currentIndex < 0)
+                currentIndex = sizeof(tabOrder) / sizeof(int) - 1;
+
+            else if (currentIndex >= sizeof(tabOrder) / sizeof(int))
+                currentIndex = 0;
+
+            SetFocus(GetDlgItem(dialog, tabOrder[currentIndex]));
+            SendMessage(GetDlgItem(dialog, tabOrder[currentIndex]), EM_SETSEL, 0, -1);
+        }
+
+        else if (wParam == VK_ESCAPE)
+        {
+            SendMessageA(GetDlgItem(dialog, IDC_BUTTON_CANCEL), BM_CLICK, 0, 0);
+        }
+
+        else if (wParam == VK_RETURN)
+        {
+            SendMessageA(GetDlgItem(dialog, IDC_BUTTON_OK), BM_CLICK, 0, 0);
+        }
+
+        break;
+    }
+
+    }
+
+    WNDPROC oldProc = (WNDPROC)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+    return CallWindowProc(oldProc, hwnd, msg, wParam, lParam);
+}
+
 void ShowSelectBlockDialog(HINSTANCE instance, uint64_t start, uint64_t end)
 {
     if (!dialog)
         dialog = CreateDialog(instance, MAKEINTRESOURCE(IDD_SelectBlock), GuiGetWindowHandle(), DialogProc);
+
+    ptr_l = (WNDPROC)SetWindowLongPtr(GetDlgItem(dialog, IDC_START_EDIT), GWL_WNDPROC, (DWORD)SubClassProc);
+    SetWindowLongPtr(GetDlgItem(dialog, IDC_START_EDIT), GWLP_USERDATA, (LONG)ptr_l);
+
+    ptr_l = (WNDPROC)SetWindowLongPtr(GetDlgItem(dialog, IDC_END_EDIT), GWL_WNDPROC, (DWORD)SubClassProc);
+    SetWindowLongPtr(GetDlgItem(dialog, IDC_END_EDIT), GWLP_USERDATA, (LONG)ptr_l);
+
+    ptr_l = (WNDPROC)SetWindowLongPtr(GetDlgItem(dialog, IDC_LENGTH_EDIT), GWL_WNDPROC, (DWORD)SubClassProc);
+    SetWindowLongPtr(GetDlgItem(dialog, IDC_LENGTH_EDIT), GWLP_USERDATA, (LONG)ptr_l);
 
     setupDialogValues(dialog, start, end);
     ShowWindow(dialog, SW_SHOW);
